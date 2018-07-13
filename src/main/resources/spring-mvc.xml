@@ -47,7 +47,7 @@
     
    <!-- 对模型视图添加前后缀 -->  
     <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">     
-        <property name="prefix" value="/WEB-INF/pages/" />    
+        <property name="prefix" value="/pages/" />    
         <property name="suffix" value=".jsp" />    
     </bean>    
       

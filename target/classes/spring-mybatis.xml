@@ -53,7 +53,7 @@
 		<!--mapper参数别名  -->
 		<property name="typeAliasesPackage" value="com.oaec.pojo" />
 		<!-- 扫描sql配置文件:自动扫描mapping.xml文件 -->
-		<property name="mapperLocations" value="classpath:mapper/*Mapper.xml" /> <!--只加载映射文件*.xml得区分 -->
+		<!-- <property name="mapperLocations" value="classpath:mapper/*Mapper.xml" />  --><!--只加载映射文件*.xml得区分 -->
 	</bean>
 
 	<!-- 4.配置扫描Dao接口包，动态实现Dao接口，注入到spring容器中 -->
