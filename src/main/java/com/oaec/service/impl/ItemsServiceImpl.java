@@ -13,11 +13,18 @@ public class ItemsServiceImpl implements ItemsService{
 	@Autowired
 	ItemsMapper itemsMapper;
 
+	
 	@Override
 	public List<Items> getAllItems() {
 		return itemsMapper.getAllItems();
 	}
 	
+	
+	@Override
+	public int insertOneItem(Items items) {
+		int insertOneItem = itemsMapper.insertOneItem(items);
+		return insertOneItem;
+	}
 	
 	
 	
@@ -34,6 +41,15 @@ public class ItemsServiceImpl implements ItemsService{
 	public void setItemsMapper(ItemsMapper itemsMapper) {
 		this.itemsMapper = itemsMapper;
 	}
+
+
+
+
+
+
+
+
+
 
 	
 	

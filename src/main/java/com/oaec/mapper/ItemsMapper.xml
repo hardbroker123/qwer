@@ -7,4 +7,10 @@
 	<select id="getAllItems" resultType="Items">
 		select * from items
 	</select>
+	
+	<insert id="insertOneItem" parameterType="Items" >
+		insert into items values(seq_items.nextval,
+		#{itemName},#{itemType},#{itemColor},#{itemBrand},
+		#{itemDetail},#{itemPrice},#{itemPic})  
+	</insert>
 </mapper>

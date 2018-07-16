@@ -10,4 +10,9 @@ import com.oaec.pojo.Items;
 public interface ItemsMapper {
 	
 	public List<Items> getAllItems();
+	
+	/**
+	 * 添加商品
+	 */
+	public int insertOneItem(Items items);
 }

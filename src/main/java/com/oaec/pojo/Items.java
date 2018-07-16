@@ -7,6 +7,7 @@ public class Items {
 	private String itemBrand;
 	private String itemDetail;
 	private float itemPrice;
+	private String itemPic;
 	public int getItemId() {
 		return itemId;
 	}
@@ -67,6 +68,12 @@ public class Items {
 		super();
 		this.itemId = itemId;
 		this.itemName = itemName;
+	}
+	public String getItemPic() {
+		return itemPic;
+	}
+	public void setItemPic(String itemPic) {
+		this.itemPic = itemPic;
 	}
 	
 	

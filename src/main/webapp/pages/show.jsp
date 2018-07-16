@@ -29,20 +29,159 @@
     <script src="<%=request.getContextPath()%>/bootstrap/js/bootstrap.min.js"></script>
 </head>
 <body>
+<script type="text/javascript">
+		$(function(){
+			$("#saveUser").click(function(){
+					save();
+			});
+		    $("#upUser").click(function(){
+					up();
+			});
+		});
+			
+		function save(){
+			
+			var itemName= $("#itemName").val();
+			var itemType= $("#itemType").val();
+			var itemColor= $("#itemColor").val();
+			var itemBrand= $("#itemBrand").val();
+			var itemDetail= $("#itemDetail").val();
+			var itemPrice= $("#itemPrice").val();
+			var item_Pic = $("#item_Pic").val();
+			
+			if(itemName == ''){
+				alert('商品名称不能为空');
+				$("#itemName").focus();
+				return;
+			}
+			if(itemColor == ''){
+				alert('商品颜色不能为空');
+				$("#itemColor").focus();
+				return;
+			}
+			if(itemType == ''){
+				alert('商品类型不能为空');
+				$("#itemType").focus();
+				return;
+			}
+			if(itemBrand == ''){
+				alert('商品品牌不能为空');
+				$("#itemBrand").focus();
+				return;
+			}
+			if(itemDetail == ''){
+				alert('商品详情不能为空');
+				$("#itemDetail").focus();
+				return;
+			}
+			if(itemPrice == ''){
+				alert('商品价格不能为空');
+				$("#itemPrice").focus();
+				return;
+			}
+			$.ajax({
+				url:"pages/insertOneItem.action",
+				type:"post",
+				/* 返回值数据类型 */
+				dataType:"text",
+				/* contentType:"application/json;charset=utf-8", */
+				/* data:$("#myform").serialize(), */ 
+				/* 传的值是key value形式 */
+				data:{itemName:itemName,itemType:itemType,itemColor:itemColor,itemBrand:itemBrand,itemPrice:itemPrice,itemDetail:itemDetail,itemPic:item_Pic}, 
+				success:function(data,status){
+					if(data=="success"){
+						alert("添加成功");
+						$('#myform').modal('hide');
+					}
+				},
+				error:function(){
+					/* alert($("#myform").serialize()); */
+					alert("请求失败");
+				}
+			  });
+			}
+			function up(){
+			var itemName= $("#itemName").val();
+			var itemType= $("#itemType").val();
+			var itemColor= $("#itemColor").val();
+			var itemBrand= $("#itemBrand").val();
+			var itemDetail= $("#itemDetail").val();
+			var itemPrice= $("#itemPrice").val();
+			
+			
+			if(itemName == ''){
+				alert('商品名称不能为空');
+				$("#itemName").focus();
+				return;
+			}
+			if(itemColor == ''){
+				alert('商品颜色不能为空');
+				$("#itemColor").focus();
+				return;
+			}
+			if(itemType == ''){
+				alert('商品类型不能为空');
+				$("#itemType").focus();
+				return;
+			}
+			if(itemBrand == ''){
+				alert('商品品牌不能为空');
+				$("#itemBrand").focus();
+				return;
+			}
+			if(itemDetail == ''){
+				alert('商品详情不能为空');
+				$("#itemDetail").focus();
+				return;
+			}
+			if(itemPrice == ''){
+				alert('商品价格不能为空');
+				$("#itemPrice").focus();
+				return;
+			}
+			$.ajax({
+				url:"pages/insertOneItem.action",
+				type:"post",
+				
+				dataType:"json",
+				data:{itemId:itemId}, 
+				success:function(data,status){
+					if(data=="success"){
+						alert("修改成功");
+						$('#myform').modal('hide');
+					}
+				},
+				error:function(){
+					alert("请求失败");
+				}
+			  });
+			}
+</script>
 
-<form action="GetItemsByNameAndPriceServlet" method="post">
+<form action="" method="post">
 商品名称：<input type="text" name="itemName"  />
 价格区间:<input type="text" name="itemPriceMin"  />--<input type="text" name="itemPriceMax"  />
 <input type="submit" name="cx" value="查询" class="btn btn-default" />
 </form>
-<h3>商品信息  共${itemsNum }条</h3>
-<form action="DeleteItemsByIdsServlect" method="post" class="form-inline">
+<h3>商品信息  共<span>4</span>条</h3>
+<table id="test-table" class="table table-hover table-striped table-condensed table-bordered"></table>
+<form action="" method="post" class="form-inline" >
+<!--toolbar  -->
+<div id="toolbar" class="btn-toolbar">
+    <button  type="button" class="btn btn-success" data-toggle="modal" data-target="#mydlg">
+      <span class="glyphicon glyphicon-plus" aria-hidden="true" >添加</span>
+    </button>
+    <button  type="button" onclick="delMany()" class="btn btn-danger">
+      <span class="glyphicon glyphicon-trash" aria-hidden="true">删除</span>
+    </button>
+</div>
 <input type="submit" value="批量删除"  class="btn btn-default" />
 <table border="1px" class="table table-bordered table-striped table-hover">
 	<thead>
 	<tr>
 		<td><input type="checkbox" name="" value="">全选</td>
 		<td>商品编号</td>
+		<td>商品展示</td>
 		<td>商品名称</td>
 		<td>商品类型</td>
 		<td>商品颜色</td>
@@ -58,6 +197,7 @@
 	<tr>
 		<td><input type="checkbox" name="itemIds" value="${it.itemId}"></td>
 		<td>${it.itemId}</td>
+		<td>${it.itemPic}</td>
 		<td>${it.itemName}</td>
 		<td>${it.itemType}</td>
 		<td>${it.itemColor}</td>
@@ -74,50 +214,10 @@
 </table>
 </form>
 <hr />
-<%-- 
-<form action="<%=path %>InsertOrUpdateOneItemsServlet" method="post" class="form-inline">
-	<table border="1px" class="table table-bordered table-striped table-hover">
-		<tr>
-			<td>商品编号</td>
-			<td><input type="text" readonly="readonly" value="${sessionScope.items.itemId }" name="itemId" id="itemId"></td>
-		</tr>
-		<tr>
-			<td>商品名称</td>
-			<td><input type="text" value="${sessionScope.items.itemName }" name="itemName" id="itemName"></td>
-			
-		</tr>
-		<tr>
-			<td>商品类型</td>
-			<td><input type="text" value="${sessionScope.items.itemType }" name="itemType" id="itemType"></td>
-		</tr>
-		<tr>
-			<td>商品颜色</td>
-			<td><input type="text" value="${sessionScope.items.itemColor }" name="itemColor" id="itemColor"></td>
-		</tr>
-		<tr>
-			<td>商品品牌</td>
-			<td><input type="text" value="${sessionScope.items.itemBrand }" name="itemBrand" id="itemBrand"></td>
-		</tr>
-		<tr>
-			<td>商品价格</td>
-			<td><input type="text" value="${sessionScope.items.itemPrice }" name="itemPrice" id="itemPrice"></td>
-		</tr>
-		<tr>
-			<td>商品详情</td>
-			<td><textarea rows="3" cols="22"   name="itemDetail" id="itemDetail">${sessionScope.items.itemDetail }</textarea></td>
-		</tr>
-		<tr>
-			<td>
-				<input type="submit" value="提交" class="btn btn-default">
-				<input type="reset" value="重置" class="btn btn-default">
-			</td>
-		</tr>
-	</table>
-</form>
- --%>
+
 
 <!-- 模态框（Modal） -->
-<!-- 修改用户 -->
+<!-- 修改商品-->
 <div id="mydlg1" class="modal fade" id="myModal" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false" aria-labelledby="myModalLabel" aria-hidden="true">
    
     <div class="modal-dialog">
@@ -129,95 +229,66 @@
             </div>
             <div class="container">
 			<form class="form-horizontal" id="myform1"  method="post">
-			
-			
-<!-- 			<div class="form-group">
-			<label class="col-md-2 control-label">登录账号：</label>
-			<div class="col-md-3 ">
-			<input type="text" disabled="disabled" id="user_account1" name="user_account" class="form-control form-control-static" placeholder="请输入登陆账号">
-			</div>
-			</div>
-			
-			<div class="form-group">
-			<label class="col-md-2 control-label">用户姓名：</label>
-			<div class="col-md-3 ">
-			<input type="text" id="user_name1"  name="user_name" class="form-control form-control-static" placeholder="请输入用户姓名">
-			</div>
-			</div>
-			
-			
-			<div class="form-group">
-			<label class="col-md-2 control-label">用户密码：</label>
-			<div class="col-md-3 ">
-			<input type="text" id="user_password1"  disabled="disabled" name="user_password" class="form-control form-control-static" placeholder="请输入密码">
-			</div>
-			</div>
-			
-			<div class="form-group">
-			<label class="col-md-2 control-label">用户性别：</label>
-			<div class="col-md-3">
-			&nbsp;&nbsp;&nbsp;
-			<input type="radio" id="nan1" checked name="user_sex" value="男">男&nbsp;&nbsp;
-			<input type="radio" id="nv1" name="user_sex"  value="女">女
-			</div>
-			</div>
- 
+
  			<div class="form-group">
-			<label class="col-md-2 control-label">年龄：</label>
+			<label class="col-md-2 control-label">商品编号：</label>
 			<div class="col-md-3 ">
-			<input type="text" id="user_age1"  name="user_age" class="form-control form-control-static" placeholder="请输入年龄">
+			<input type="text"  id="user_birth1"  onclick="WdatePicker()"  name="user_birth" class="form-control form-control-static" >
 			</div>
 			</div>
-			 -->
- 			<div class="form-group">
+			
+			<div class="form-group">
 			<label class="col-md-2 control-label">商品名称：</label>
 			<div class="col-md-3 ">
-			<input type="text"  id="user_birth1"  onclick="WdatePicker()"  name="user_birth" class="form-control form-control-static" placeholder="请输入出生日期">
+			<input type="text"  id="user_birth1"  onclick="WdatePicker()"  name="user_birth" class="form-control form-control-static" >
+			</div>
+			</div>
+			
+			<div class="form-group">
+			<label class="col-md-2 control-label">商品图片：</label>
+			<div class="col-md-3 ">
+			<input type="file"  id="user_birth1"  onclick="WdatePicker()"  name="user_birth" class="form-control form-control-static" >
 			</div>
 			</div>
  			
  			<div class="form-group">
 			<label class="col-md-2 control-label">商品类型：</label>
 			<div class="col-md-3 ">
-			<select id="sid1"  name="dept_id" class="form-control form-control-static" placeholder="请输入Email">
-			
-			</select>
+			<input type="text" id="user_age1"  name="user_age" class="form-control form-control-static" >
 			</div>
-			</div> 
+			</div>
 			
  			<div class="form-group">
 			<label class="col-md-2 control-label">商品颜色：</label>
 			<div class="col-md-3 ">
-			<input type="text" id="user_phone1" name="user_phone" class="form-control form-control-static" placeholder="请输入联系电话">
+			<input type="text" id="user_phone1" name="user_phone" class="form-control form-control-static" >
 			</div>
 			</div>
 			
 			<div class="form-group">
 			<label class="col-md-2 control-label">商品品牌：</label>
 			<div class="col-md-3 ">
-			<input type="text" id="user_phone1" name="user_phone" class="form-control form-control-static" placeholder="请输入联系电话">
+			<input type="text" id="user_phone1" name="user_phone" class="form-control form-control-static" >
 			</div>
 			</div>
 			
 			<div class="form-group">
 			<label class="col-md-2 control-label">商品价格：</label>
 			<div class="col-md-3 ">
-			<input type="text" id="email1" name="email" class="form-control form-control-static" placeholder="请输入Email">
+			<input type="text" id="email1" name="email" class="form-control form-control-static" >
 			</div>
 			</div>
-			
-		
 			
 			<div class="form-group">
 			<label class="col-md-2 control-label">商品详情：</label>
 			<div class="col-md-3">
-			<textarea rows="3" id="user_address1" name="user_address" cols="32" class="form-control form-control-static" placeholder="请输入联系地址"></textarea>
+			<textarea rows="3" id="user_address1" name="user_address" cols="32" class="form-control form-control-static" ></textarea>
 			</div>
 			</div>
             <div class="modal-footer col-md-6">
             <!--用来清空表单数据-->
             <input type="reset" name="reset" style="display: none;" />
-               <button type="button" onclick="upUser()" class="btn btn-primary">提交</button>
+               <button type="button" id="upUser" class="btn btn-primary">提交</button>
                 <button class="btn btn-danger" data-dismiss="modal">关闭</button>
             </div>
             </form>
@@ -226,20 +297,89 @@
     </div><!-- /.modal -->
 </div> 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+<!-- 模态框（Modal） -->
+<!-- 添加用户 -->
+<div id="mydlg" class="modal fade" id="myModal" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false" aria-labelledby="myModalLabel" aria-hidden="true">
+   
+    <div class="modal-dialog">
+        <div class="modal-content">
+        
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel">添加商品</h4>
+            </div>
+            <div class="container">
+			<form class="form-horizontal" id="myform"  method="post">
+			
+			<div class="form-group">
+			<label class="col-md-2 control-label">商品编号：</label>
+			<div class="col-md-3 ">
+			<input type="text"  id="itemId"   name="itemId" class="form-control form-control-static" readonly="readonly" >
+			</div>
+			</div>
+			
+			
+			<div class="form-group">
+			<label class="col-md-2 control-label">商品名称：</label>
+			<div class="col-md-3 ">
+			<input type="text" onblur="validAccount()" id="itemName" name="itemName" class="form-control form-control-static" placeholder="请输入商品名称">
+			</div>
+			<label class="control-label"><span id="mid" style="color:red"></span></label>
+			</div>
+			
+			<div class="form-group">
+			<label class="col-md-2 control-label">商品图片：</label>
+			<div class="col-md-3 ">
+			<input type="file" id="item_Pic"  name="item_Pic" class="form-control form-control-static" placeholder="请输入用户姓名">
+			</div>
+			</div>
+			
+			
+			<div class="form-group">
+			<label class="col-md-2 control-label">商品类型：</label>
+			<div class="col-md-3 ">
+			<input type="text" id="itemType"  name="itemType" class="form-control form-control-static" placeholder="请输入商品类型">
+			</div>
+			</div>
+			
+			<div class="form-group">
+			<label class="col-md-2 control-label">商品颜色：</label>
+			<div class="col-md-3 ">
+			<input type="text" id="itemColor" name="itemColor" class="form-control form-control-static" placeholder="请输入商品颜色">
+			</div>
+			</div>
+			
+			<div class="form-group">
+			<label class="col-md-2 control-label">商品品牌：</label>
+			<div class="col-md-3 ">
+			<input type="text" id="itemBrand" name="itemBrand" class="form-control form-control-static" placeholder="请输入商品品牌">
+			</div>
+			</div>
+ 
+ 			<div class="form-group">
+			<label class="col-md-2 control-label">商品价格：</label>
+			<div class="col-md-3 ">
+			<input type="text" id="itemPrice"  name="itemPrice" class="form-control form-control-static" placeholder="请输入商品价格">
+			</div>
+			</div>
+			
+			<div class="form-group">
+			<label class="col-md-2 control-label">商品详情：</label>
+			<div class="col-md-3">
+			<textarea rows="3" id="itemDetail" name="itemDetail" cols="32" class="form-control form-control-static" placeholder="请输入商品详情"></textarea>
+			</div>
+			</div>
+            <div class="modal-footer col-md-6">
+            <!--用来清空表单数据-->
+            <input type="reset" name="reset" style="display: none;" />
+                <button class="btn btn-danger" data-dismiss="modal">关闭</button>
+               <button type="button" id="saveUser" class="btn btn-primary">提交</button>
+            </div>
+            </form>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div> 
 
 </body>
 </html>
